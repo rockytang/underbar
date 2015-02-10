@@ -50,7 +50,7 @@
   // iterator function over each item in the input collection.
   _.each = function(collection, iterator) {
     if(Array.isArray(collection)) {
-      for(var i = 0; i < collection.length ; i++) {
+      for(var i = 0, k = collection.length; i < k ; i++) {
         iterator(collection[i], i, collection);
       }} else { 
       for(var prop in collection) {
@@ -98,6 +98,28 @@
 
   // Produce a duplicate-free version of the array.
   _.uniq = function(array) {
+    
+    var result = [],
+        isSorted = arguments[1];
+
+    if(isSorted){
+
+      _.each(array, function(value, i){
+        if(array[i] !== array[i-1]) {
+          result.push(array[i]);
+        }
+      })
+      
+    } else {
+
+      _.each(array, function(value){
+        if(value in result) {null} else {
+          result.push(value);
+        }
+      })
+    }
+
+    return result;
   };
 
 
