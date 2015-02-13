@@ -266,9 +266,9 @@
   // exists in obj
   _.defaults = function(obj) {
     
-    for(var i = 1, k = arguments.length; i < k; i++){
-      
+    for(var i = 1, k = arguments.length; i < k; i++){      
       var source = arguments[i];
+
       for(var prop in source) {
         if(prop in obj) {
           null;
@@ -322,7 +322,20 @@
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
+    var cache = {};
+
+    var memo = function(key){
+      
+      if(key in cache) {null;} else {
+        cache[key] = func.apply(this,arguments);
+      }
+
+      return cache[key];     
+    }
+    
+    return memo;    
   };
+
 
   // Delays a function for the given number of milliseconds, and then calls
   // it with the arguments supplied.
@@ -331,6 +344,13 @@
   // parameter. For example _.delay(someFunction, 500, 'a', 'b') will
   // call someFunction('a', 'b') after 500ms
   _.delay = function(func, wait) {
+    var args = Array.prototype.slice.call(arguments,2);
+
+
+    return setTimeout(function(){
+      func.apply(this,args);
+    },
+    wait)
   };
 
 
@@ -345,6 +365,28 @@
   // input array. For a tip on how to make a copy of an array, see:
   // http://mdn.io/Array.prototype.slice
   _.shuffle = function(array) {
+    var copy = Array.prototype.slice.call(array, 0),
+    // created a copy of the original array
+
+        length = copy.length,
+        randomIndex = [],
+        randomNum,
+        temp;
+
+    for(var i = 0; i < length; i++){
+      randomNum = Math.floor(Math.random()* length);
+      randomIndex.push(randomNum);      
+    }
+    // created another array with random indices
+
+    for(var i = 0; i < length; i++){
+      temp = copy[i];
+      copy[i] = copy[randomIndex[i]];
+      copy[randomIndex[i]] = temp;
+    }
+    // shuffled the copy array by using randomIndex values to indicate new random placement
+
+    return copy;
   };
 
 
