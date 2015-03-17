@@ -111,10 +111,11 @@
       })
       
     } else {
+      array = array.sort(function(a,b){return a-b});
 
-      _.each(array, function(value){
-        if(value in result) {null} else {
-          result.push(value);
+      _.each(array, function(value,i){
+        if(array[i] !== array[i-1]) {
+          result.push(array[i]);
         }
       })
     }
@@ -254,9 +255,9 @@
     for(var i = 1, k = arguments.length; i < k; i++){
       
       var source = arguments[i];
-      for(var prop in source) {
-        obj[prop] = source[prop];
-      }
+      _.each(source, function(value, prop){
+        obj[prop] = value;
+      })
     }
 
     return obj;
